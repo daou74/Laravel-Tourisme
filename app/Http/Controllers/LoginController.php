@@ -15,7 +15,7 @@ class LoginController extends Controller
     public function __construct(Request $request){
         $this->request = $request;
     }
-    
+
     public function logout(){
         Auth::logout();
         return redirect()->route('login');
@@ -86,7 +86,7 @@ class LoginController extends Controller
 
         $emailSend = new EmailService;
         $subject = "Activate your Account";
-        
+
         $emailSend->sendEmail($subject, $email, $name, true, $activation_code, $activation_token);
 
         return redirect()->route('app_activation_code', ['token' => $token])->with('success', 'You have just resent the new activation code.');
@@ -95,7 +95,7 @@ class LoginController extends Controller
     public function activationAcccountLink($token)
     {
         $user = User::where('activation_token', $token)->first();
-        
+
         if (!$user) {
             return redirect()->route('login')->with('danger', 'This token doesn\'t match any user.');
         }
@@ -119,7 +119,7 @@ class LoginController extends Controller
 
         if ($this->request->isMethod('post')) {
 
-            // 
+            //
             $new_email = $this->request->input('new-email');
             $user_exixte = User::where('email', $new_email)->first();
             if($user_exixte)
@@ -159,7 +159,12 @@ class LoginController extends Controller
             return view('auth.activation_account_change_email', [
                 'token'=>$token
             ]);
-    
-        }     
+
+        }
+    }
+
+    public function forgotpassword()
+    {
+        return view('auth.forgot_password');
     }
 }
